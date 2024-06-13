@@ -1,4 +1,5 @@
 import React from "react";
+import EmployeeRow from "./employee-row";
 
 const EmployeeTable = ({ employees }: { employees: any[] }) => {
   return (
@@ -16,18 +17,7 @@ const EmployeeTable = ({ employees }: { employees: any[] }) => {
         </thead>
         <tbody>
           {employees.map((user, index) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td>{user.id}</td>
-              <td>
-                {user.firstName} {user.lastName}
-              </td>
-              <td>{user.email}</td>
-              <td>{user.phone}</td>
-              <td>
-                <button className="btn btn-primary">View Profile</button>
-              </td>
-            </tr>
+            <EmployeeRow key={user.id} index={index} employee={user} />
           ))}
         </tbody>
       </table>
