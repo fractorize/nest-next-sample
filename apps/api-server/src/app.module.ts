@@ -1,8 +1,9 @@
+import configuration from '../config/configuration';
 import { ConfigModule } from '@nestjs/config'; //Should always be the first import
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import configuration from '../config/configuration';
+import { TrpcModule } from '@api/trpc/trpc.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import configuration from '../config/configuration';
       envFilePath: ['.env.local'],
       load: [configuration],
     }),
+    TrpcModule,
   ],
   controllers: [AppController],
   providers: [AppService],
