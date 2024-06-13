@@ -9,7 +9,7 @@ import { TrpcModule } from '@api/trpc/trpc.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env.local'],
+      envFilePath: ['../.env.local'],
       load: [configuration],
     }),
     TrpcModule,
