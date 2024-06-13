@@ -4,6 +4,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TrpcModule } from '@api/trpc/trpc.module';
+import { EmployeeModule } from './modules/employee/employee.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { TrpcModule } from '@api/trpc/trpc.module';
       load: [configuration],
     }),
     TrpcModule,
+    EmployeeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
