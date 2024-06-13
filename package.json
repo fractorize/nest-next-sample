@@ -1,0 +1,12 @@
+{
+  "name": "prisma-nest-next-trpc",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "pnpm run --parallel dev"
+  },
+  "keywords": [],
+  "author": "mano@fractorize.com",
+  "license": "ISC"
+}
