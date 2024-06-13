@@ -2,6 +2,8 @@ import { trpc } from "@web/app/trpc";
 import EmployeeTable from "../components/employees/employee-table";
 import Link from "next/link";
 
+export const revalidate = 0;
+
 export default async function Home() {
   const employees = await trpc.employees.query();
   return (
@@ -14,7 +16,9 @@ export default async function Home() {
         <EmployeeTable employees={employees} />
       </div>
       <div className="flex">
-        <button className="btn btn-sm  btn-primary">Add Employee</button>
+        <Link href="/employees/new">
+          <button className="btn btn-sm  btn-primary">Add Employee</button>
+        </Link>
       </div>
     </main>
   );

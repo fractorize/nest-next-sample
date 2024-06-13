@@ -12,21 +12,9 @@ export class TrpcRouter {
   ) {}
 
   appRouter = this.trpc.router({
-    hello: this.trpc.procedure
-      .input(
-        z.object({
-          name: z.string().optional(),
-        }),
-      )
-      .query(({ input }) => {
-        const { name } = input;
-        return {
-          greeting: `Hello ${name ? name : `Bilbo`}`,
-        };
-      }),
-
-    employees: this.trpc.procedure.query(() => {
-      return this.employeeService.getEmployees();
+    employees: this.trpc.procedure.query(async () => {
+      const employees = await this.employeeService.getEmployees();
+      return employees;
     }),
 
     employee: this.trpc.procedure
@@ -38,6 +26,23 @@ export class TrpcRouter {
       .query(({ input }) => {
         const { id } = input;
         return this.employeeService.getEmployeeById({ id });
+      }),
+
+    newEmployee: this.trpc.procedure
+      .input(
+        z.object({
+          data: z.object({
+            firstName: z.string(),
+            middleName: z.string().optional(),
+            lastName: z.string(),
+            dateOfBirth: z.string().optional(),
+          }),
+        }),
+      )
+      .mutation(async ({ input }) => {
+        const { data } = input;
+        const resp = await this.employeeService.createEmployee({ data });
+        return resp;
       }),
   });
 

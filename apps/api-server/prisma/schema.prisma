@@ -16,7 +16,7 @@ datasource db {
 model Employee {
   id          String    @id @default(cuid())
   firstName   String    @map("first_name")
-  middleName  String    @map("middle_name")
+  middleName  String?   @map("middle_name")
   lastName    String    @map("last_name")
   gender      String?
   dateOfBirth DateTime? @map("date_of_birth")
