@@ -1,6 +1,8 @@
 import { trpc } from "@web/app/trpc";
 import Link from "next/link";
 
+export const revalidate = 0;
+
 export default async function page({ params }: { params: { id: string } }) {
   const { id } = params;
   const employee = await trpc.employee.query({ id });

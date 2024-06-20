@@ -44,6 +44,25 @@ export class TrpcRouter {
         const resp = await this.employeeService.createEmployee({ data });
         return resp;
       }),
+
+    updateEmployee: this.trpc.procedure
+      .input(
+        z.object({
+          id: z.string(),
+          data: z.object({
+            firstName: z.string(),
+            middleName: z.string().optional(),
+            lastName: z.string(),
+            // dateOfBirth: z.string().optional(),
+          }),
+        }),
+      )
+      .mutation(async ({ input }) => {
+        const { id, data } = input;
+        console.log({ id, data });
+        const resp = await this.employeeService.updateEmployee({ id, data });
+        return resp;
+      }),
   });
 
   async applyMiddleware(app: INestApplication) {

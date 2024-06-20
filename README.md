@@ -32,7 +32,7 @@ $ pnpm run dev
 
 This will start:
  nextjs server in localhost:3000
- nextjs server in localhost:3001
+ nestjs server in localhost:3001
 ```
 
 ## Test

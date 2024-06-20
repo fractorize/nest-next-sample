@@ -27,6 +27,7 @@ export class EmployeeRepository {
     data: Prisma.EmployeeUpdateInput;
   }): Promise<Employee> {
     const { id, data } = params;
+    console.log({ id, data });
     return this.prisma.employee.update({ where: { id }, data });
   }
 
