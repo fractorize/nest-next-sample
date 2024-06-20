@@ -59,8 +59,19 @@ export class TrpcRouter {
       )
       .mutation(async ({ input }) => {
         const { id, data } = input;
-        console.log({ id, data });
         const resp = await this.employeeService.updateEmployee({ id, data });
+        return resp;
+      }),
+
+    deleteEmployee: this.trpc.procedure
+      .input(
+        z.object({
+          id: z.string(),
+        }),
+      )
+      .mutation(async ({ input }) => {
+        const { id } = input;
+        const resp = await this.employeeService.deleteEmployee({ id });
         return resp;
       }),
   });
