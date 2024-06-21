@@ -103,7 +103,12 @@ export default function EmployeeForm({ employee }: { employee: any }) {
           <button className="btn btn-primary" onClick={onSave}>
             Save
           </button>
-          <Link href="/employees" className="btn">
+          <Link
+            href={
+              employeeCopy.id ? `/employees/${employeeCopy.id}` : "/employees"
+            }
+            className="btn"
+          >
             <button>Cancel</button>
           </Link>
         </div>
