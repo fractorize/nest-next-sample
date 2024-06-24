@@ -8,5 +8,8 @@
   },
   "keywords": [],
   "author": "mano@fractorize.com",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "superjson": "^2.2.1"
+  }
 }

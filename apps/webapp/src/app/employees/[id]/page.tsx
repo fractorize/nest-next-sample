@@ -51,7 +51,7 @@ export default function page({ params }: { params: { id: string } }) {
             <h2 className="card-title">
               {employee.firstName} {employee.middleName} {employee.lastName}{" "}
             </h2>
-            <p>DoB: {employee.dateOfBirth}</p>
+            <p>DoB: {employee.dateOfBirth.toString()}</p>
             <div className="card-actions">
               <Link href={`/employees/${employee.id}/edit`}>
                 <button className="btn btn-sm btn-primary">Edit</button>
