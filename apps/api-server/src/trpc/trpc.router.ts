@@ -35,7 +35,7 @@ export class TrpcRouter {
             firstName: z.string(),
             middleName: z.string().optional(),
             lastName: z.string(),
-            dateOfBirth: z.string().optional(),
+            dateOfBirth: z.date().optional(),
           }),
         }),
       )
@@ -53,7 +53,7 @@ export class TrpcRouter {
             firstName: z.string(),
             middleName: z.string().optional(),
             lastName: z.string(),
-            // dateOfBirth: z.string().optional(),
+            dateOfBirth: z.date().optional(),
           }),
         }),
       )

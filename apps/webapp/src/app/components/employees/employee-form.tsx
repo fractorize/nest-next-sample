@@ -5,8 +5,17 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+type Employee = {
+  id: string;
+  firstName: string;
+  middleName?: string;
+  lastName: string;
+  email?: string;
+  dateOfBirth?: Date;
+};
+
 export default function EmployeeForm({ employee }: { employee: any }) {
-  const [employeeCopy, setEmployeeCopy] = useState<any>();
+  const [employeeCopy, setEmployeeCopy] = useState<Employee | null>();
   const router = useRouter();
 
   useEffect(() => {
@@ -28,6 +37,7 @@ export default function EmployeeForm({ employee }: { employee: any }) {
   const createNewEmployee = useMemo(() => {
     return async () => {
       try {
+        if (!employeeCopy) return;
         await trpc.newEmployee.mutate({ data: employeeCopy });
         router.push(`/employees`);
         router.refresh();
@@ -40,9 +50,10 @@ export default function EmployeeForm({ employee }: { employee: any }) {
   const updateEmployee = useMemo(() => {
     return async () => {
       try {
+        if (!employeeCopy) return;
         await trpc.updateEmployee.mutate({
           id: employeeCopy.id,
-          data: { ...employeeCopy },
+          data: { ...employeeCopy, dateOfBirth: new Date() },
         });
         router.push(`/employees/${employeeCopy.id}`);
         router.refresh();
