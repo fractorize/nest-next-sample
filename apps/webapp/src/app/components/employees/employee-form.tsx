@@ -5,17 +5,8 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-type Employee = {
-  id: string;
-  firstName: string;
-  middleName?: string;
-  lastName: string;
-  email?: string;
-  dateOfBirth?: Date;
-};
-
 export default function EmployeeForm({ employee }: { employee: any }) {
-  const [employeeCopy, setEmployeeCopy] = useState<Employee | null>();
+  const [employeeCopy, setEmployeeCopy] = useState<any>();
   const router = useRouter();
 
   useEffect(() => {
@@ -108,6 +99,7 @@ export default function EmployeeForm({ employee }: { employee: any }) {
               type="text"
               className="grow"
               placeholder="daisy@site.com"
+              value={employeeCopy.email || ""}
               onChange={onChange}
             />
           </label>

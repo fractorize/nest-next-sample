@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, Employee } from '@prisma/client';
 import { EmployeeRepository } from './employee.repository';
+import { EmployeeRowItem } from '@api/types/employee';
 
 @Injectable()
 export class EmployeeService {
@@ -16,7 +17,7 @@ export class EmployeeService {
     return this.employeeRepository.getEmployeeById(params);
   }
 
-  async getEmployees(): Promise<Employee[]> {
+  async getEmployees(): Promise<EmployeeRowItem[]> {
     return this.employeeRepository.getEmployees();
   }
 

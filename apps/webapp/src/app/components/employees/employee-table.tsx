@@ -1,7 +1,8 @@
 import React from "react";
 import EmployeeRow from "./employee-row";
+import { EmployeeRowItem } from "@api/types/employee";
 
-const EmployeeTable = ({ employees }: { employees: any[] }) => {
+const EmployeeTable = ({ employees }: { employees: EmployeeRowItem[] }) => {
   return (
     <div className="overflow-x-auto">
       <table className="table table-zebra w-full">
@@ -11,7 +12,6 @@ const EmployeeTable = ({ employees }: { employees: any[] }) => {
             <td>Id</td>
             <th>Name</th>
             <th>Email</th>
-            <th>Phone</th>
             <th>Actions</th>
           </tr>
         </thead>

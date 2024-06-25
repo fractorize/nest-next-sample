@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'apps/api-server/prisma/prisma.service';
 import { Prisma, Employee } from '@prisma/client';
+import { EmployeeRowItem } from '@api/types/employee';
 
 @Injectable()
 export class EmployeeRepository {
@@ -18,8 +19,17 @@ export class EmployeeRepository {
     return this.prisma.employee.findUnique({ where: { id } });
   }
 
-  async getEmployees(): Promise<Employee[]> {
-    return this.prisma.employee.findMany();
+  async getEmployees(): Promise<EmployeeRowItem[]> {
+    return this.prisma.employee.findMany({
+      select: {
+        id: true,
+        firstName: true,
+        middleName: true,
+        lastName: true,
+        email: true,
+        dateOfBirth: true,
+      },
+    }) as Promise<EmployeeRowItem[]>;
   }
 
   async updateEmployee(params: {
