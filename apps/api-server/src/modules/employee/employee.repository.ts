@@ -1,17 +1,30 @@
+import * as bcrypt from 'bcrypt';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'apps/api-server/prisma/prisma.service';
 import { Prisma, Employee } from '@prisma/client';
-import { EmployeeRowItem } from '@api/types/employee';
+import { EmployeeRowItem, NewEmployee } from '@api/types/employee';
+
+const saltOrRounds = 10;
 
 @Injectable()
 export class EmployeeRepository {
   constructor(private prisma: PrismaService) {}
 
-  async createEmployee(params: {
-    data: Prisma.EmployeeCreateInput;
-  }): Promise<Employee> {
+  async createEmployee(params: { data: NewEmployee }): Promise<Employee> {
     const { data } = params;
-    return this.prisma.employee.create({ data });
+    const { officialEmail, password, ...rest } = data;
+    const userAccount = await this.prisma.userAccount.create({
+      data: {
+        officialEmail,
+        passwordHash: await bcrypt.hash(password, saltOrRounds),
+      },
+    });
+    return this.prisma.employee.create({
+      data: {
+        ...rest,
+        userAccountId: userAccount.id,
+      },
+    });
   }
 
   async getEmployeeById(params: { id: string }): Promise<Employee | null> {
@@ -26,7 +39,6 @@ export class EmployeeRepository {
         firstName: true,
         middleName: true,
         lastName: true,
-        email: true,
         dateOfBirth: true,
       },
     }) as Promise<EmployeeRowItem[]>;

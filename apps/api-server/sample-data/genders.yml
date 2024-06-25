@@ -1,0 +1,8 @@
+- id: male
+  name: "Male"
+  description: "Male gender"
+- id: female
+  name: "Female"
+  description: "Female gender"
+- id: other
+  name: "Other"

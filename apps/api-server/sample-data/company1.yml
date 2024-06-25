@@ -1,0 +1,141 @@
+id: company1
+name: "Tech Innovators Inc."
+description: "Leading company in tech innovations."
+departments:
+  - id: department1
+    name: "Research and Development"
+    description: "Department focused on new tech research and product development."
+    companyId: "company1"
+  - id: department2
+    name: "Human Resources"
+    description: "Department managing employee relations and development."
+    companyId: "company1"
+
+designations:
+  - id: designation1
+    name: "Software Engineer"
+    departmentId: "department1"
+  - id: designation2
+    name: "HR Manager"
+    departmentId: "department2"
+
+roles:
+  - id: role1
+    name: "Admin"
+    description: "Administrative role with full permissions."
+    companyId: "company1"
+    createdAt: "2023-06-01T00:00:00.000Z"
+    updatedAt: "2023-06-01T00:00:00.000Z"
+  - id: role2
+    name: "Employee"
+    description: "Standard employee role."
+    companyId: "company1"
+    createdAt: "2023-06-01T00:00:00.000Z"
+    updatedAt: "2023-06-01T00:00:00.000Z"
+
+resources:
+  - id: resource1
+    description: "Access to the employee's first name."
+    companyId: "company1"
+    modelName: "Employee"
+    fieldName: "firstName"
+    createdAt: "2023-06-01T00:00:00.000Z"
+    updatedAt: "2023-06-01T00:00:00.000Z"
+  - id: resource2
+    description: "Access to the employee's last name."
+    companyId: "company1"
+    modelName: "Employee"
+    fieldName: "lastName"
+    createdAt: "2023-06-01T00:00:00.000Z"
+    updatedAt: "2023-06-01T00:00:00.000Z"
+  - id: resource3
+    description: "Access to the employee's email."
+    companyId: "company1"
+    modelName: "Employee"
+    fieldName: "personalEmail"
+    createdAt: "2023-06-01T00:00:00.000Z"
+    updatedAt: "2023-06-01T00:00:00.000Z"
+  - id: resource4
+    description: "Access to the user's official email."
+    companyId: "company1"
+    modelName: "User"
+    fieldName: "officialEmail"
+    createdAt: "2023-06-01T00:00:00.000Z"
+    updatedAt: "2023-06-01T00:00:00.000Z"
+  - id: resource5
+    description: "Access to the department name."
+    companyId: "company1"
+    modelName: "Department"
+    fieldName: "name"
+    createdAt: "2023-06-01T00:00:00.000Z"
+    updatedAt: "2023-06-01T00:00:00.000Z"
+
+permissions:
+  - id: permission1
+    type: "CREATE"
+    roles: 
+      - "role1"
+    resourceId: "resource1"
+    createdAt: "2023-06-01T00:00:00.000Z"
+    updatedAt: "2023-06-01T00:00:00.000Z"
+  - id: permission2
+    type: "READ"
+    roles:
+      - "role2"
+    resourceId: "resource2"
+    createdAt: "2023-06-01T00:00:00.000Z"
+    updatedAt: "2023-06-01T00:00:00.000Z"
+
+employees:
+  - id: employee1
+    firstName: "John"
+    middleName: "A"
+    lastName: "Doe"
+    genderId: "male"
+    dateOfBirth: "1990-01-01T00:00:00.000Z"
+    bloodGroup: "A_POSITIVE"
+    personalEmail: "john.doe@example.com"
+    userAccountId: "user1"
+    createdAt: "2023-06-01T00:00:00.000Z"
+    updatedAt: "2023-06-01T00:00:00.000Z"
+    designations:
+      - designationId: "designation1"
+        startDate: "2023-06-01T00:00:00.000Z"
+    departments:
+      - departmentId: "department1"
+        startDate: "2023-06-01T00:00:00.000Z"
+    roles:
+      - roleId: "role2"
+        startDate: "2023-06-01T00:00:00.000Z"
+  - id: employee2
+    firstName: "Jane"
+    middleName: "B"
+    lastName: "Smith"
+    genderId: "female"
+    dateOfBirth: "1985-05-15T00:00:00.000Z"
+    bloodGroup: "B_POSITIVE"
+    personalEmail: "jane.smith@example.com"
+    userAccountId: "user2"
+    createdAt: "2023-06-01T00:00:00.000Z"
+    updatedAt: "2023-06-01T00:00:00.000Z"
+    designations:
+      - designationId: "designation2"
+        startDate: "2023-06-01T00:00:00.000Z"
+    departments:
+      - departmentId: "department2"
+        startDate: "2023-06-01T00:00:00.000Z"
+    roles:
+      - roleId: "role1"
+        startDate: "2023-06-01T00:00:00.000Z"
+
+userAccounts:
+  - id: user1
+    officialEmail: "john.doe@techinnovators.com"
+    password: "pwd"
+    createdAt: "2023-06-01T00:00:00.000Z"
+    updatedAt: "2023-06-01T00:00:00.000Z"
+  - id: user2
+    officialEmail: "jane.smith@techinnovators.com"
+    password: "pwd"
+    createdAt: "2023-06-01T00:00:00.000Z"
+    updatedAt: "2023-06-01T00:00:00.000Z"

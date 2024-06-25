@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, Employee } from '@prisma/client';
 import { EmployeeRepository } from './employee.repository';
-import { EmployeeRowItem } from '@api/types/employee';
+import { EmployeeRowItem, NewEmployee } from '@api/types/employee';
 
 @Injectable()
 export class EmployeeService {
   constructor(private employeeRepository: EmployeeRepository) {}
 
   async createEmployee(params: {
-    data: Prisma.EmployeeCreateInput;
+    data: NewEmployee;
   }): Promise<Employee> {
     return this.employeeRepository.createEmployee(params);
   }

@@ -13,15 +13,205 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Define schema for RBAC for a multi tenant application
+model Company {
+  id          String       @id @default(cuid())
+  name        String       @unique
+  description String?
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+  departments Department[]
+  roles       Role[]
+  resources   Resource[]
+
+  @@map("companies")
+}
+
+model Department {
+  id                  String               @id @default(cuid())
+  name                String               @unique
+  description         String?
+  company             Company              @relation(fields: [companyId], references: [id])
+  companyId           String               @map("company_id")
+  createdAt           DateTime             @default(now()) @map("created_at")
+  updatedAt           DateTime             @updatedAt @map("updated_at")
+  designations        Designation[]
+  employeeDepartments EmployeeDepartment[]
+  roles               Role[]
+
+  @@unique([companyId, name])
+  @@map("departments")
+}
+
+model EmployeeDepartment {
+  id           String     @id @default(cuid())
+  employee     Employee   @relation(fields: [employeeId], references: [id])
+  employeeId   String     @map("employee_id")
+  department   Department @relation(fields: [departmentId], references: [id])
+  departmentId String     @map("department_id")
+  startDate    DateTime   @map("start_date")
+  endDate      DateTime?  @map("end_date")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+
+  @@unique([employeeId, departmentId])
+  @@map("employee_departments")
+}
+
+model Designation {
+  id                   String                @id @default(cuid())
+  name                 String                @unique
+  description          String?
+  department           Department            @relation(fields: [departmentId], references: [id])
+  departmentId         String                @map("department_id")
+  createdAt            DateTime              @default(now()) @map("created_at")
+  updatedAt            DateTime              @updatedAt @map("updated_at")
+  employeeDesignations EmployeeDesignation[]
+  reportsTo            Designation?          @relation("DesignationParent", fields: [reportsToId], references: [id])
+  reportsToId          String?               @map("reports_to_id")
+  reportees            Designation[]         @relation("DesignationParent")
+
+  @@unique([departmentId, name])
+  @@map("designations")
+}
+
+model EmployeeDesignation {
+  id            String      @id @default(cuid())
+  employee      Employee    @relation(fields: [employeeId], references: [id])
+  employeeId    String      @map("employee_id")
+  designation   Designation @relation(fields: [designationId], references: [id])
+  designationId String      @map("designation_id")
+  startDate     DateTime    @map("start_date")
+  endDate       DateTime?   @map("end_date")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  @@unique([employeeId, designationId])
+  @@map("employee_designations")
+}
+
+model Role {
+  id           String         @id @default(cuid())
+  name         String         @unique
+  description  String?
+  permissions  Permission[]
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
+  EmployeeRole EmployeeRole[]
+  company      Company        @relation(fields: [companyId], references: [id])
+  companyId    String         @map("company_id")
+  department   Department?    @relation(fields: [departmentId], references: [id])
+  departmentId String?        @map("department_id")
+
+  @@unique([companyId, name])
+  @@map("roles")
+}
+
+model Resource {
+  id          String       @id @default(cuid())
+  modelName   String       @map("model_name")
+  fieldName   String?      @map("field_name")
+  description String?
+  company     Company      @relation(fields: [companyId], references: [id])
+  companyId   String       @map("company_id")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+  permissions Permission[]
+
+  @@unique([companyId, modelName, fieldName])
+  @@map("resources")
+}
+
+model Permission {
+  id          String         @id @default(cuid())
+  type        PermissionType
+  description String?
+  resource    Resource       @relation(fields: [resourceId], references: [id])
+  resourceId  String         @map("resource_id")
+  roles       Role[]
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime       @updatedAt @map("updated_at")
+
+  @@unique([resourceId, type])
+  @@map("permissions")
+}
+
+model EmployeeRole {
+  id         String    @id @default(cuid())
+  employee   Employee  @relation(fields: [employeeId], references: [id])
+  employeeId String    @map("employee_id")
+  role       Role      @relation(fields: [roleId], references: [id])
+  roleId     String    @map("role_id")
+  startDate  DateTime  @map("start_date")
+  endDate    DateTime? @map("end_date")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  @@unique([employeeId, roleId])
+  @@map("employee_roles")
+}
+
+model Gender {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  description String?
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  employees   Employee[]
+
+  @@map("genders")
+}
+
 model Employee {
-  id          String    @id @default(cuid())
-  firstName   String    @map("first_name")
-  middleName  String?   @map("middle_name")
-  lastName    String    @map("last_name")
-  gender      String?
-  dateOfBirth DateTime? @map("date_of_birth")
-  bloodGroup  String?   @map("blood_group")
-  email       String?   @unique
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id            String                @id @default(cuid())
+  firstName     String                @map("first_name")
+  middleName    String?               @map("middle_name")
+  lastName      String                @map("last_name")
+  gender        Gender?               @relation(fields: [genderId], references: [id])
+  genderId      String?               @map("gender_id")
+  dateOfBirth   DateTime?             @map("date_of_birth")
+  bloodGroup    BloodGroup?           @map("blood_group")
+  personalEmail String?               @unique @map("personal_email")
+  userAccount   UserAccount           @relation(fields: [userAccountId], references: [id])
+  userAccountId String                @unique @map("user_account_id")
+  createdAt     DateTime              @default(now()) @map("created_at")
+  updatedAt     DateTime              @updatedAt @map("updated_at")
+  designations  EmployeeDesignation[]
+  departments   EmployeeDepartment[]
+  roles         EmployeeRole[]
+
+  @@map("employees")
+}
+
+model UserAccount {
+  id            String    @id @default(cuid())
+  officialEmail String    @unique @map("official_email")
+  passwordHash  String    @map("password_hash")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  Employee      Employee?
+
+  @@map("user_accounts")
+}
+
+enum PermissionType {
+  CREATE
+  READ
+  UPDATE
+  DELETE
+
+  @@map("permission_types")
+}
+
+enum BloodGroup {
+  A_POSITIVE
+  A_NEGATIVE
+  B_POSITIVE
+  B_NEGATIVE
+  AB_POSITIVE
+  AB_NEGATIVE
+  O_POSITIVE
+  O_NEGATIVE
+
+  @@map("blood_groups")
 }

@@ -99,7 +99,7 @@ export default function EmployeeForm({ employee }: { employee: any }) {
               type="text"
               className="grow"
               placeholder="daisy@site.com"
-              value={employeeCopy.email || ""}
+              value={employeeCopy.officialEmail || ""}
               onChange={onChange}
             />
           </label>

@@ -36,7 +36,8 @@ export class TrpcRouter {
             middleName: z.string().optional(),
             lastName: z.string(),
             dateOfBirth: z.date().optional(),
-            email: z.string().email().optional(),
+            officialEmail: z.string().email(),
+            password: z.string(),
           }),
         }),
       )

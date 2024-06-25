@@ -7,4 +7,13 @@ type EmployeeRowItem = {
   dateOfBirth?: Date;
 };
 
-export { EmployeeRowItem };
+type NewEmployee = {
+  firstName: string;
+  middleName?: string;
+  lastName: string;
+  dateOfBirth?: Date;
+  officialEmail: string;
+  password: string;
+};
+
+export { EmployeeRowItem, NewEmployee };
