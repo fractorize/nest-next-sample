@@ -6,7 +6,7 @@ import { UserSignIn } from '@api/types/employee';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async findOne(officialEmail: string): Promise<UserSignIn | undefined> {
+  async findByOfficialEmail(officialEmail: string): Promise<UserSignIn | undefined> {
     const user = await this.prisma.user.findUnique({
       where: { officialEmail },
       select: {
@@ -48,7 +48,6 @@ export class UserService {
     }
     const { assignedRoles, ...rest } = user;
     const roles = assignedRoles.map((role) => role.role);
-    console.log(roles);
     return {
       ...rest,
       roles,
