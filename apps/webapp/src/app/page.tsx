@@ -1,5 +1,8 @@
+"use server";
+
 import { trpc } from "@web/app/trpc";
 import Link from "next/link";
+import LogoutButton from "./components/widgets/buttons/logout";
 
 export default async function Home() {
   return (
@@ -10,6 +13,7 @@ export default async function Home() {
       <Link href="/employees" className="text-blue-500 text-lg">
         Employees
       </Link>
+      <LogoutButton />
     </main>
   );
 }

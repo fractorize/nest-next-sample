@@ -5,8 +5,10 @@ import {
   HttpCode,
   HttpStatus,
   Session,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { NoFilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('auth')
 export class AuthController {
@@ -14,10 +16,13 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
+  @UseInterceptors(NoFilesInterceptor())
   async login(
     @Session() session: Record<string, any>,
     @Body() signInDto: Record<string, any>,
   ) {
+    console.log(session?.id);
+    console.log(signInDto);
     return this.authService.login(
       session,
       signInDto.officialEmail,
@@ -30,4 +35,5 @@ export class AuthController {
   async logout(@Session() session: Record<string, any>) {
     return this.authService.logout(session);
   }
+  
 }

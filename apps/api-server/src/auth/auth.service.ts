@@ -16,7 +16,7 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    const { passwordHash, ...rest } = user;
+    const { passwordHash, roles, ...rest } = user;
     if (!passwordHash) {
       throw new UnauthorizedException('Not authorized to sign in');
     }
@@ -24,11 +24,19 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
+    const permissions = roles.reduce((acc: any, role) => {
+      role.permissions.forEach((permission) => {
+        const resource = permission.resource?.uri;
+        acc[resource] = acc[resource] || [];
+        acc[resource].push(permission.type);
+      });
+      return acc;
+    }, {});
     const payload = {
       id: rest.id,
       officialEmail: rest.officialEmail,
       companyId: rest.companyId,
-      roles: rest.roles,
+      permissions,
       firstName: rest.employeeRecord.firstName,
       lastName: rest.employeeRecord.lastName,
       middleName: rest.employeeRecord.middleName,

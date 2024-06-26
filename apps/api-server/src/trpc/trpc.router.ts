@@ -1,17 +1,30 @@
-import { INestApplication, Injectable } from '@nestjs/common';
+import { INestApplication, Injectable, Session } from '@nestjs/common';
 import { z } from 'zod';
 import { TrpcService } from '@api/trpc/trpc.service';
 import * as trpcExpress from '@trpc/server/adapters/express';
 import { EmployeeService } from '@api/modules/employee/employee.service';
+import { AuthService } from '@api/auth/auth.service';
 
 @Injectable()
 export class TrpcRouter {
   constructor(
     private readonly trpc: TrpcService,
     private readonly employeeService: EmployeeService,
+    private readonly authService: AuthService,
   ) {}
-
   appRouter = this.trpc.router({
+
+    // login: this.trpc.procedure.input(
+    //   z.object({
+    //     officialEmail: z.string().email(),
+    //     password: z.string(),
+    //   }),
+    // ).mutation(async ({ input }) => {
+    //   const { officialEmail, password } = input;
+    //   const resp = await this.authService.login(officialEmail, password );
+    //   return resp;
+    // }),
+
     employees: this.trpc.procedure.query(async () => {
       const employees = await this.employeeService.getEmployees();
       return employees;
