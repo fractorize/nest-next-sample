@@ -93,13 +93,38 @@ async function main() {
     }
 
     // Create or update userAccounts
-    for (const {password, ...userAccount} of company1.userAccounts) {
-      userAccount.passwordHash = await bcrypt.hash(password, saltOrRounds);
-      await prisma.userAccount.upsert({
+    for (const {
+      password,
+      companyId,
+      roles,
+      ...userAccount
+    } of company1.userAccounts) {
+      const data = {
+        ...userAccount,
+        passwordHash: await bcrypt.hash(password, saltOrRounds),
+        company: {
+          connect: { id: company.id },
+        },
+      };
+      await prisma.user.upsert({
         where: { id: userAccount.id },
-        update: userAccount,
-        create: userAccount,
+        update: data,
+        create: data,
       });
+      for (const role of roles) {
+        const userRole = {
+          user: { connect: { id: userAccount.id } },
+          role: { connect: { id: role.roleId } },
+          startDate: role.startDate,
+        };
+        await prisma.userRole.upsert({
+          where: {
+            userId_roleId: { userId: userAccount.id, roleId: role.roleId },
+          },
+          update: userRole,
+          create: userRole,
+        });
+      }
     }
 
     // Create or update employees
@@ -113,25 +138,12 @@ async function main() {
     } of company1.employees) {
       const data = {
         ...employee,
-        // designations: {
-        //   connect: employee.designations.map((d: any) => ({
-        //     id: d.designationId,
-        //   })),
-        // },
-        // departments: {
-        //   connect: employee.departments.map((d: any) => ({
-        //     id: d.departmentId,
-        //   })),
-        // },
         userAccount: {
           connect: { id: userAccountId },
         },
         gender: {
           connect: { id: genderId },
         },
-        // roles: {
-        //   connect: employee.roles.map((r: any) => ({ id: r.roleId })),
-        // },
       };
       await prisma.employee.upsert({
         where: { id: employee.id },
@@ -143,11 +155,16 @@ async function main() {
           employee: { connect: { id: employee.id } },
           designation: { connect: { id: designation.designationId } },
           startDate: designation.startDate,
-        }
+        };
         await prisma.employeeDesignation.upsert({
-          where: { employeeId_designationId: { employeeId: employee.id, designationId: designation.designationId } },
+          where: {
+            employeeId_designationId: {
+              employeeId: employee.id,
+              designationId: designation.designationId,
+            },
+          },
           update: employeeDesignation,
-          create: employeeDesignation
+          create: employeeDesignation,
         });
       }
       for (const department of departments) {
@@ -155,27 +172,19 @@ async function main() {
           employee: { connect: { id: employee.id } },
           department: { connect: { id: department.departmentId } },
           startDate: department.startDate,
-        }
+        };
         await prisma.employeeDepartment.upsert({
-          where: { employeeId_departmentId: { employeeId: employee.id, departmentId: department.departmentId } },
+          where: {
+            employeeId_departmentId: {
+              employeeId: employee.id,
+              departmentId: department.departmentId,
+            },
+          },
           update: employeeDepartment,
-          create: employeeDepartment
-        });
-      }
-      for (const role of roles) {
-        const employeeRole = {
-          employee: { connect: { id: employee.id } },
-          role: { connect: { id: role.roleId } },
-          startDate: role.startDate,
-        }
-        await prisma.employeeRole.upsert({
-          where: { employeeId_roleId: { employeeId: employee.id, roleId: role.roleId } },
-          update: employeeRole,
-          create: employeeRole
+          create: employeeDepartment,
         });
       }
     }
-
   }
 }
 

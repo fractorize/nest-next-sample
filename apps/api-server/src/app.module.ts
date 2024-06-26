@@ -5,6 +5,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TrpcModule } from '@api/trpc/trpc.module';
 import { EmployeeModule } from './modules/employee/employee.module';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { EmployeeModule } from './modules/employee/employee.module';
     }),
     TrpcModule,
     EmployeeModule,
+    AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -12,11 +12,14 @@ export class EmployeeRepository {
 
   async createEmployee(params: { data: NewEmployee }): Promise<Employee> {
     const { data } = params;
-    const { officialEmail, password, ...rest } = data;
-    const userAccount = await this.prisma.userAccount.create({
+    const { officialEmail, password, companyId, ...rest } = data;
+    const userAccount = await this.prisma.user.create({
       data: {
         officialEmail,
         passwordHash: await bcrypt.hash(password, saltOrRounds),
+        company: {
+          connect: { id: companyId },
+        },
       },
     });
     return this.prisma.employee.create({

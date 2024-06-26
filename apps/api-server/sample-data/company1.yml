@@ -37,36 +37,31 @@ resources:
   - id: resource1
     description: "Access to the employee's first name."
     companyId: "company1"
-    modelName: "Employee"
-    fieldName: "firstName"
+    uri: "/employees/{employeeId}/firstName"
     createdAt: "2023-06-01T00:00:00.000Z"
     updatedAt: "2023-06-01T00:00:00.000Z"
   - id: resource2
     description: "Access to the employee's last name."
     companyId: "company1"
-    modelName: "Employee"
-    fieldName: "lastName"
+    uri: "/employees/{employeeId}/lastName"
     createdAt: "2023-06-01T00:00:00.000Z"
     updatedAt: "2023-06-01T00:00:00.000Z"
   - id: resource3
     description: "Access to the employee's email."
     companyId: "company1"
-    modelName: "Employee"
-    fieldName: "personalEmail"
+    uri: "/employees/{employeeId}/email"
     createdAt: "2023-06-01T00:00:00.000Z"
     updatedAt: "2023-06-01T00:00:00.000Z"
   - id: resource4
     description: "Access to the user's official email."
     companyId: "company1"
-    modelName: "User"
-    fieldName: "officialEmail"
+    uri: "/users/{userId}/officialEmail"
     createdAt: "2023-06-01T00:00:00.000Z"
     updatedAt: "2023-06-01T00:00:00.000Z"
   - id: resource5
     description: "Access to the department name."
     companyId: "company1"
-    modelName: "Department"
-    fieldName: "name"
+    uri: "/departments/{departmentId}/name"
     createdAt: "2023-06-01T00:00:00.000Z"
     updatedAt: "2023-06-01T00:00:00.000Z"
 
@@ -104,9 +99,6 @@ employees:
     departments:
       - departmentId: "department1"
         startDate: "2023-06-01T00:00:00.000Z"
-    roles:
-      - roleId: "role2"
-        startDate: "2023-06-01T00:00:00.000Z"
   - id: employee2
     firstName: "Jane"
     middleName: "B"
@@ -124,9 +116,6 @@ employees:
     departments:
       - departmentId: "department2"
         startDate: "2023-06-01T00:00:00.000Z"
-    roles:
-      - roleId: "role1"
-        startDate: "2023-06-01T00:00:00.000Z"
 
 userAccounts:
   - id: user1
@@ -134,8 +123,16 @@ userAccounts:
     password: "pwd"
     createdAt: "2023-06-01T00:00:00.000Z"
     updatedAt: "2023-06-01T00:00:00.000Z"
+    companyId: "company1"
+    roles:
+      - roleId: "role2"
+        startDate: "2023-06-01T00:00:00.000Z"
   - id: user2
     officialEmail: "jane.smith@techinnovators.com"
     password: "pwd"
     createdAt: "2023-06-01T00:00:00.000Z"
     updatedAt: "2023-06-01T00:00:00.000Z"
+    companyId: "company1"
+    roles:
+      - roleId: "role1"
+        startDate: "2023-06-01T00:00:00.000Z"

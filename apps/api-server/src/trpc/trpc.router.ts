@@ -32,12 +32,13 @@ export class TrpcRouter {
       .input(
         z.object({
           data: z.object({
+            companyId: z.string(),
             firstName: z.string(),
-            middleName: z.string().optional(),
             lastName: z.string(),
-            dateOfBirth: z.date().optional(),
             officialEmail: z.string().email(),
             password: z.string(),
+            middleName: z.string().optional(),
+            dateOfBirth: z.date().optional(),
           }),
         }),
       )
