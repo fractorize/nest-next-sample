@@ -1,6 +1,5 @@
 "use client";
 
-import { trpc } from "@web/app/trpc";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -29,7 +28,7 @@ export default function EmployeeForm({ employee }: { employee: any }) {
     return async () => {
       try {
         if (!employeeCopy) return;
-        await trpc.newEmployee.mutate({ data: employeeCopy });
+        // await trpc.newEmployee.mutate({ data: employeeCopy });
         router.push(`/employees`);
         router.refresh();
       } catch (error) {
@@ -42,10 +41,10 @@ export default function EmployeeForm({ employee }: { employee: any }) {
     return async () => {
       try {
         if (!employeeCopy) return;
-        await trpc.updateEmployee.mutate({
-          id: employeeCopy.id,
-          data: { ...employeeCopy, dateOfBirth: new Date() },
-        });
+        // await trpc.updateEmployee.mutate({
+        //   id: employeeCopy.id,
+        //   data: { ...employeeCopy, dateOfBirth: new Date() },
+        // });
         router.push(`/employees/${employeeCopy.id}`);
         router.refresh();
       } catch (error) {

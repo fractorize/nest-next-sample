@@ -7,7 +7,6 @@ Postgresql (DB)
 Prisma (ORM)
 NestJS (Backend)
 NextJS (Frontend)
-tRPC (Backend - Frontend communication)
 Tailwind/DaisyUI (Component styling)
 ```
 

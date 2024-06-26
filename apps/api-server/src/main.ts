@@ -1,22 +1,17 @@
 import { NestFactory } from '@nestjs/core';
-import * as session from 'express-session';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { TrpcRouter } from '@api/trpc/trpc.router';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.enableCors();
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET!,
-      resave: false,
-      saveUninitialized: false,
-    }),
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter(),
   );
-  const trpcRouter = app.get(TrpcRouter);
-  await trpcRouter.applyMiddleware(app);
-
+  app.enableCors();
   const configService = app.get(ConfigService);
   const port = configService.get<number>('port')!;
   await app.listen(port);

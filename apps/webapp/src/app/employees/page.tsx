@@ -1,11 +1,11 @@
-import { trpc } from "@web/app/trpc";
 import EmployeeTable from "../components/employees/employee-table";
 import Link from "next/link";
 
 export const revalidate = 0;
 
 export default async function Home() {
-  const employees = await trpc.employees.query();
+  // const employees = await trpc.employees.query();
+  const employees: any = [];
   return (
     <main className="flex min-h-screen flex-col gap-2 p-24">
       <Link href="/" className="text-secondary text-lg">

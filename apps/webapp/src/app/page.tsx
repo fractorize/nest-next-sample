@@ -1,6 +1,5 @@
 "use server";
 
-import { trpc } from "@web/app/trpc";
 import Link from "next/link";
 import LogoutButton from "./components/widgets/buttons/logout";
 
