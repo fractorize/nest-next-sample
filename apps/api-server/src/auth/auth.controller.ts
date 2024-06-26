@@ -8,7 +8,6 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { NoFilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('auth')
 export class AuthController {
