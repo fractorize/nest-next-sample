@@ -40,18 +40,14 @@ export class AuthService {
     return { message: 'Successfully signed out' };
   }
 
-  getLoggedInUser(request: Request) {
+  getLoggedInUser(token: string) {
     try {
-      const token = this.extractTokenFromHeader(request);
       if (!token) {
         throw new UnauthorizedException();
       }
       return this.jwtService.verifyAsync(token);
-    } catch (e: any) {}
-  }
-
-  private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
+    } catch (e: any) {
+      console.log(e);
+    }
   }
 }

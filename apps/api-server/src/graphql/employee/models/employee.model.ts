@@ -14,10 +14,9 @@ export class Employee {
   @Field({ nullable: true })
   middleName?: string;
 
-  @Field({ nullable: true })
-  personalEmail: string;
+  // @Field({ nullable: true })
+  // personalEmail: string;
 
   // @Field({ nullable: true })
   // dateOfBirst: Date;
-  
 }

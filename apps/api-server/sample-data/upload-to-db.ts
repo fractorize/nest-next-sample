@@ -160,6 +160,7 @@ async function main() {
         company: {
           connect: { id: company.id },
         },
+        isDeleted: false,
       };
       await prisma.employee.upsert({
         where: { id: employee.id },

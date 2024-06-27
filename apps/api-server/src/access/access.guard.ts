@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AccessService } from './access.service';
+import getRequestFromContext from '@api/utils/get-request-from-context';
 
 @Injectable()
 export class AccessGuard {
@@ -10,7 +11,7 @@ export class AccessGuard {
   ) {}
 
   async canActivate(context: any): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
+    const request = getRequestFromContext(context);
     const allowUnauthenticatedAccess = this.reflector.get<boolean>(
       'allowUnauthenticatedAccess',
       context.getHandler(),

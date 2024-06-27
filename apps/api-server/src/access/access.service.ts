@@ -16,7 +16,7 @@ export class AccessService {
       throw new UnauthorizedException();
     }
     const {sub: userId, permissions} = request.user;
-    const resource = request.route.path;
+    const resource = request.route?.path;
     // const matchingPermittedResources = Object.keys(permissions).filter((resource) => {
     //   return resource === resource;
     // })
