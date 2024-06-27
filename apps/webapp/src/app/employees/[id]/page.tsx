@@ -18,8 +18,9 @@ export default function page({ params }: { params: { id: string } }) {
     (async () => {
       setIsLoading(true);
       try {
-        const employee = {};
-        // const employee = await trpc.employee.query({ id });
+        const employee = await fetch(`/api/employees/${id}`).then((res) =>
+          res.json()
+        );
         setEmployee(employee);
       } catch (error) {
         setError(error);

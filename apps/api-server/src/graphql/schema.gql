@@ -6,15 +6,6 @@ type DefaultResponse {
   message: String!
 }
 
-type Employee {
-  firstName: String!
-  id: String!
-  lastName: String!
-  middleName: String
-  personalEmail: String
-}
-
 type Query {
-  employee(id: String!): Employee
   health: DefaultResponse!
 }

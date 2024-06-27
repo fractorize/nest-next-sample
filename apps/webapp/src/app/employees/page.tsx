@@ -1,18 +1,11 @@
-import { apiGET } from "@web/utils/api";
-// import EmployeeTable from "../components/employees/employee-table";
+import getEmployees from "../server-utils/get-employees";
 import Link from "next/link";
+import EmployeeTable from "../components/employees/employee-table";
 
 export const revalidate = 0;
 
 export default async function Home() {
-  // const employees = await trpc.employees.query();
-  try {
-    const userProfile = await apiGET("/hello");
-    console.log("userProfile", userProfile);
-  } catch (error) {
-    console.log("error", error);
-  }
-  const employees: any = [];
+  const employees: any = await getEmployees();
   return (
     <main className="flex min-h-screen flex-col gap-2 p-24">
       <Link href="/" className="text-secondary text-lg">
@@ -20,7 +13,7 @@ export default async function Home() {
       </Link>
       <h1 className="text-lg font-bold">Employees</h1>
       <div className="z-10 w-full max-w-5xl ">
-        {/* <EmployeeTable employees={employees} /> */}
+        <EmployeeTable employees={employees} />
       </div>
       <div className="flex">
         <Link href="/employees/new">

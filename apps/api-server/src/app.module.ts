@@ -5,13 +5,17 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { Enhancer, GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { RootQuery } from './root.query';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { EmployeeModule } from './graphql/employee/employee.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthController } from './auth/auth.controller';
 import { AuthGuard } from './auth/auth.guard';
-import { RootQuery } from './root.query';
+import { AccessModule } from './access/access.module';
+import { AccessGuard } from './access/access.guard';
+// import { EmployeeModule } from './graphql/employee/employee.module';
+import { EmployeeModule } from './employee/employee.module';
+import { EmployeeController } from './employee/employee.controller';
 
 @Module({
   imports: [
@@ -25,10 +29,11 @@ import { RootQuery } from './root.query';
       autoSchemaFile: join(process.cwd(), 'src/graphql/schema.gql'),
       sortSchema: true,
     }),
-    EmployeeModule,
     AuthModule,
+    AccessModule,
+    EmployeeModule,
   ],
-  controllers: [AppController, AuthController],
+  controllers: [AppController, AuthController, EmployeeController],
   providers: [
     AppService,
     RootQuery,
@@ -36,6 +41,10 @@ import { RootQuery } from './root.query';
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    {
+      provide: APP_GUARD,
+      useClass: AccessGuard,
+    }
   ],
 })
 export class AppModule {}
