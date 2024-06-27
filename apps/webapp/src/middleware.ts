@@ -16,10 +16,17 @@ export const config = {
 function loggedIn() {
   const cookieStore = cookies();
   const accessToken = cookieStore.get("accessToken")?.value;
-  const sessionExpires = cookieStore.get("sessionExpires")?.value;
+  const sessionExpiresAt = cookieStore.get("sessionExpires")?.value;
+  // if (accessToken && sessionExpiresAt) {
+  //   if (new Date() > new Date(parseInt(sessionExpiresAt) * 1000)) {
+  //     console.log("SESSION EXPIRED");
+  //   } else {
+  //     console.log("SESSION ACTIVE");
+  //   }
+  // }
   return (
     accessToken &&
-    sessionExpires &&
-    new Date() < new Date(parseInt(sessionExpires) * 1000)
+    sessionExpiresAt &&
+    new Date() < new Date(parseInt(sessionExpiresAt) * 1000)
   );
 }

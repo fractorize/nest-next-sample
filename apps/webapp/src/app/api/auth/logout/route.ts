@@ -11,7 +11,6 @@ export async function POST(request: NextRequest) {
     cookies().delete("accessToken");
     return NextResponse.redirect(new URL("/", request.nextUrl.origin));
   } catch (error: any) {
-    console.log(error);
     const { message, status } =
       error.statusCode === 401
         ? { message: "Invalid credentials", status: 401 }

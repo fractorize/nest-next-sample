@@ -12,7 +12,6 @@ export async function POST(request: NextRequest) {
     }
     const { accessToken } = await res.json();
     const user = jwtDecode(accessToken);
-    // console.log(user);
     const cookieStore = cookies();
     cookieStore.set("accessToken", accessToken);
     cookieStore.set("sessionExpires", `${user.exp}`);
