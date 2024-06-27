@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '@api/user/user.service';
 
@@ -37,5 +38,20 @@ export class AuthService {
 
   async logout() {
     return { message: 'Successfully signed out' };
+  }
+
+  getLoggedInUser(request: Request) {
+    try {
+      const token = this.extractTokenFromHeader(request);
+      if (!token) {
+        throw new UnauthorizedException();
+      }
+      return this.jwtService.verifyAsync(token);
+    } catch (e: any) {}
+  }
+
+  private extractTokenFromHeader(request: Request): string | undefined {
+    const [type, token] = request.headers.authorization?.split(' ') ?? [];
+    return type === 'Bearer' ? token : undefined;
   }
 }
