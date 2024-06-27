@@ -13,6 +13,9 @@ export class EmployeeRepository {
   async createEmployee(params: { data: NewEmployee }): Promise<Employee> {
     const { data } = params;
     const { officialEmail, password, companyId, ...rest } = data;
+    if (!companyId) {
+      throw new Error('Company ID is required');
+    }
     const userAccount = await this.prisma.user.create({
       data: {
         officialEmail,
@@ -22,10 +25,16 @@ export class EmployeeRepository {
         },
       },
     });
+    if (!userAccount?.id) throw new Error('User account not created');
     return this.prisma.employee.create({
       data: {
         ...rest,
-        userAccountId: userAccount.id,
+        company: {
+          connect: { id: companyId },
+        },
+        userAccount: {
+          connect: { id: userAccount.id },
+        },
       },
     });
   }
@@ -37,6 +46,9 @@ export class EmployeeRepository {
 
   async getEmployees(): Promise<EmployeeRowItem[]> {
     return this.prisma.employee.findMany({
+      where: {
+        isDeleted: false,
+      },
       select: {
         id: true,
         firstName: true,
@@ -52,12 +64,16 @@ export class EmployeeRepository {
     data: Prisma.EmployeeUpdateInput;
   }): Promise<Employee> {
     const { id, data } = params;
-    console.log({ id, data });
     return this.prisma.employee.update({ where: { id }, data });
   }
 
   async deleteEmployee(params: { id: string }): Promise<Employee> {
     const { id } = params;
-    return this.prisma.employee.delete({ where: { id } });
+    return this.prisma.employee.update({
+      where: { id },
+      data: {
+        isDeleted: true,
+      },
+    });
   }
 }

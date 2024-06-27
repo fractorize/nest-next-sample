@@ -43,3 +43,21 @@ export async function apiGET(path: string, params?: any) {
     throw error;
   }
 }
+
+export async function apiDELETE(path: string) {
+  try {
+    const accessToken = getAccesToken();
+    const res = await fetch(`${API_URL}${path}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    if (!res.ok) {
+      throw new Error(res.statusText);
+    }
+    return await res.json();
+  } catch (error: any) {
+    throw error;
+  }
+}

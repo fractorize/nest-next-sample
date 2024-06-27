@@ -1,4 +1,4 @@
-import { apiGET, apiPOST } from "@web/utils/api";
+import { apiDELETE, apiGET, apiPOST } from "@web/utils/api";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { jwtDecode } from "jwt-decode";
@@ -8,7 +8,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    console.log('GETTING', `/employees/${params.id}`);
+    console.log("GETTING", `/employees/${params.id}`);
     const employee = await apiGET(`/employees/${params.id}`);
     return NextResponse.json(employee);
   } catch (error) {
@@ -39,4 +39,17 @@ export async function POST(request: NextRequest) {
   //         };
   //   return NextResponse.json({ message }, { status });
   // }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    await apiDELETE(`/employees/${params.id}`);
+    return NextResponse.redirect(new URL("/employees", request.nextUrl.origin));
+  } catch (error) {
+    console.log("error", error);
+    throw new Error("Employee not found");
+  }
 }

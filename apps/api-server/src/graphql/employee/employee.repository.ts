@@ -25,7 +25,12 @@ export class EmployeeRepository {
     return this.prisma.employee.create({
       data: {
         ...rest,
-        userAccountId: userAccount.id,
+        company: {
+          connect: { id: companyId },
+        },
+        userAccount: {
+          connect: { id: userAccount.id },
+        },
       },
     });
   }

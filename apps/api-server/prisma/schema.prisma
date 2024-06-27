@@ -30,6 +30,7 @@ model Company {
   employeeDesignations EmployeeDesignation[]
   permissions          Permission[]
   employees            Employee[]
+  isDeleted            Boolean               @default(false) @map("is_deleted")
 
   @@map("companies")
 }
@@ -45,6 +46,7 @@ model Department {
   designations        Designation[]
   employeeDepartments EmployeeDepartment[]
   roles               Role[]
+  isDeleted           Boolean              @default(false) @map("is_deleted")
 
   @@unique([companyId, name])
   @@map("departments")
@@ -62,6 +64,7 @@ model EmployeeDepartment {
   endDate      DateTime?  @map("end_date")
   createdAt    DateTime   @default(now()) @map("created_at")
   updatedAt    DateTime   @updatedAt @map("updated_at")
+  isDeleted    Boolean    @default(false) @map("is_deleted")
 
   @@unique([employeeId, departmentId])
   @@map("employee_departments")
@@ -81,6 +84,7 @@ model Designation {
   reportsTo            Designation?          @relation("DesignationParent", fields: [reportsToId], references: [id])
   reportsToId          String?               @map("reports_to_id")
   reportees            Designation[]         @relation("DesignationParent")
+  isDeleted            Boolean               @default(false) @map("is_deleted")
 
   @@unique([departmentId, name])
   @@map("designations")
@@ -98,6 +102,7 @@ model EmployeeDesignation {
   endDate       DateTime?   @map("end_date")
   createdAt     DateTime    @default(now()) @map("created_at")
   updatedAt     DateTime    @updatedAt @map("updated_at")
+  isDeleted     Boolean     @default(false) @map("is_deleted")
 
   @@unique([employeeId, designationId])
   @@map("employee_designations")
@@ -115,6 +120,7 @@ model Role {
   department   Department?  @relation(fields: [departmentId], references: [id])
   departmentId String?      @map("department_id")
   userRoles    UserRole[]
+  isDeleted    Boolean      @default(false) @map("is_deleted")
 
   @@unique([companyId, name])
   @@map("roles")
@@ -129,6 +135,7 @@ model Resource {
   createdAt   DateTime     @default(now()) @map("created_at")
   updatedAt   DateTime     @updatedAt @map("updated_at")
   permissions Permission[]
+  isDeleted   Boolean      @default(false) @map("is_deleted")
 
   @@unique([companyId, uri])
   @@map("resources")
@@ -145,6 +152,7 @@ model Permission {
   roles       Role[]
   createdAt   DateTime       @default(now()) @map("created_at")
   updatedAt   DateTime       @updatedAt @map("updated_at")
+  isDeleted   Boolean        @default(false) @map("is_deleted")
 
   @@unique([resourceId, type])
   @@map("permissions")
@@ -160,6 +168,7 @@ model User {
   company        Company    @relation(fields: [companyId], references: [id])
   companyId      String     @map("company_id")
   assignedRoles  UserRole[]
+  isDeleted      Boolean    @default(false) @map("is_deleted")
 
   @@map("users")
 }
@@ -176,6 +185,7 @@ model UserRole {
   endDate   DateTime? @map("end_date")
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
+  isDeleted Boolean   @default(false) @map("is_deleted")
 
   @@unique([userId, roleId])
   @@map("user_roles")
@@ -188,6 +198,7 @@ model Gender {
   createdAt   DateTime   @default(now()) @map("created_at")
   updatedAt   DateTime   @updatedAt @map("updated_at")
   employees   Employee[]
+  isDeleted   Boolean    @default(false) @map("is_deleted")
 
   @@map("genders")
 }
@@ -210,6 +221,7 @@ model Employee {
   updatedAt     DateTime              @updatedAt @map("updated_at")
   designations  EmployeeDesignation[]
   departments   EmployeeDepartment[]
+  isDeleted     Boolean               @default(false) @map("is_deleted")
 
   @@map("employees")
 }

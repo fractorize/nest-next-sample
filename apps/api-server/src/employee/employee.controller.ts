@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Delete,
   HttpCode,
   HttpStatus,
   UseInterceptors,
@@ -24,5 +25,10 @@ export class EmployeeController {
   @Get(":id")
   async getEmployeeById(@Param() params: {id: string}) {
     return this.employeeService.getEmployeeById(params);
+  }
+
+  @Delete(":id")
+  async deleteEmployee(@Param() params: {id: string}) {
+    return this.employeeService.deleteEmployee(params);
   }
 }

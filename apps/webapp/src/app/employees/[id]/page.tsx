@@ -3,6 +3,7 @@
 import Alert from "@web/app/components/widgets/alert";
 import DeleteButton from "@web/app/components/widgets/buttons/delete";
 import Loading from "@web/app/components/widgets/loading";
+import { apiDELETE } from "@web/utils/api";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -33,7 +34,9 @@ export default function page({ params }: { params: { id: string } }) {
   const deleteEmployee = useMemo(() => {
     return async () => {
       try {
-        // await trpc.deleteEmployee.mutate({ id });
+        await fetch(`/api/employees/${id}`, {
+          method: "DELETE",
+        });
         router.push(`/employees`);
         router.refresh();
       } catch (error) {

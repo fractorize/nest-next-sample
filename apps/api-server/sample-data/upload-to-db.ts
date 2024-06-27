@@ -36,6 +36,7 @@ async function main() {
 
     // Create or update departments
     for (const department of company.departments) {
+      Object.assign(department, { company: { connect: { id: company.id } } });
       await prisma.department.upsert({
         where: { id: department.id },
         update: department,
@@ -47,6 +48,9 @@ async function main() {
     for (const { departmentId, ...designation } of company1.designations) {
       const data = {
         ...designation,
+        company: {
+          connect: { id: company.id },
+        },
         department: {
           connect: { id: departmentId },
         },
@@ -61,6 +65,7 @@ async function main() {
 
     // Create or update roles
     for (const role of company1.roles) {
+      Object.assign(role, { company: { connect: { id: company.id } } });
       await prisma.role.upsert({
         where: { id: role.id },
         update: role,
@@ -70,6 +75,7 @@ async function main() {
 
     // Create or update resources
     for (const resource of company1.resources) {
+      Object.assign(resource, { company: { connect: { id: company.id } } });
       await prisma.resource.upsert({
         where: { id: resource.id },
         update: resource,
@@ -78,11 +84,17 @@ async function main() {
     }
 
     // Create or update permissions
-    for (const { roles, ...permission } of company1.permissions) {
+    for (const { roles, resourceId, ...permission } of company1.permissions) {
       const data = {
         ...permission,
         roles: {
           connect: roles.map((r: any) => ({ id: r })),
+        },
+        company: {
+          connect: { id: company.id },
+        },
+        resource: {
+          connect: { id: resourceId },
         },
       };
       await prisma.permission.upsert({
@@ -116,6 +128,7 @@ async function main() {
           user: { connect: { id: userAccount.id } },
           role: { connect: { id: role.roleId } },
           startDate: role.startDate,
+          company: { connect: { id: company.id } },
         };
         await prisma.userRole.upsert({
           where: {
@@ -144,6 +157,9 @@ async function main() {
         gender: {
           connect: { id: genderId },
         },
+        company: {
+          connect: { id: company.id },
+        },
       };
       await prisma.employee.upsert({
         where: { id: employee.id },
@@ -155,6 +171,7 @@ async function main() {
           employee: { connect: { id: employee.id } },
           designation: { connect: { id: designation.designationId } },
           startDate: designation.startDate,
+          company: { connect: { id: company.id } },
         };
         await prisma.employeeDesignation.upsert({
           where: {
@@ -172,6 +189,7 @@ async function main() {
           employee: { connect: { id: employee.id } },
           department: { connect: { id: department.departmentId } },
           startDate: department.startDate,
+          company: { connect: { id: company.id } },
         };
         await prisma.employeeDepartment.upsert({
           where: {

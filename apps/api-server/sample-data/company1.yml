@@ -5,11 +5,9 @@ departments:
   - id: department1
     name: "Research and Development"
     description: "Department focused on new tech research and product development."
-    companyId: "company1"
   - id: department2
     name: "Human Resources"
     description: "Department managing employee relations and development."
-    companyId: "company1"
 
 designations:
   - id: designation1
@@ -23,47 +21,26 @@ roles:
   - id: role1
     name: "Admin"
     description: "Administrative role with full permissions."
-    companyId: "company1"
-    createdAt: "2023-06-01T00:00:00.000Z"
-    updatedAt: "2023-06-01T00:00:00.000Z"
   - id: role2
     name: "Employee"
     description: "Standard employee role."
-    companyId: "company1"
-    createdAt: "2023-06-01T00:00:00.000Z"
-    updatedAt: "2023-06-01T00:00:00.000Z"
 
 resources:
   - id: resource1
     description: "Access to the employee's first name."
-    companyId: "company1"
     uri: "/employees/{employeeId}/firstName"
-    createdAt: "2023-06-01T00:00:00.000Z"
-    updatedAt: "2023-06-01T00:00:00.000Z"
   - id: resource2
     description: "Access to the employee's last name."
-    companyId: "company1"
     uri: "/employees/{employeeId}/lastName"
-    createdAt: "2023-06-01T00:00:00.000Z"
-    updatedAt: "2023-06-01T00:00:00.000Z"
   - id: resource3
     description: "Access to the employee's email."
-    companyId: "company1"
     uri: "/employees/{employeeId}/email"
-    createdAt: "2023-06-01T00:00:00.000Z"
-    updatedAt: "2023-06-01T00:00:00.000Z"
   - id: resource4
     description: "Access to the user's official email."
-    companyId: "company1"
     uri: "/users/{userId}/officialEmail"
-    createdAt: "2023-06-01T00:00:00.000Z"
-    updatedAt: "2023-06-01T00:00:00.000Z"
   - id: resource5
     description: "Access to the department name."
-    companyId: "company1"
     uri: "/departments/{departmentId}/name"
-    createdAt: "2023-06-01T00:00:00.000Z"
-    updatedAt: "2023-06-01T00:00:00.000Z"
 
 permissions:
   - id: permission1
@@ -71,15 +48,11 @@ permissions:
     roles: 
       - "role1"
     resourceId: "resource1"
-    createdAt: "2023-06-01T00:00:00.000Z"
-    updatedAt: "2023-06-01T00:00:00.000Z"
   - id: permission2
     type: "READ"
     roles:
       - "role2"
     resourceId: "resource2"
-    createdAt: "2023-06-01T00:00:00.000Z"
-    updatedAt: "2023-06-01T00:00:00.000Z"
 
 employees:
   - id: employee1
@@ -91,8 +64,6 @@ employees:
     bloodGroup: "A_POSITIVE"
     personalEmail: "john.doe@example.com"
     userAccountId: "user1"
-    createdAt: "2023-06-01T00:00:00.000Z"
-    updatedAt: "2023-06-01T00:00:00.000Z"
     designations:
       - designationId: "designation1"
         startDate: "2023-06-01T00:00:00.000Z"
@@ -108,8 +79,6 @@ employees:
     bloodGroup: "B_POSITIVE"
     personalEmail: "jane.smith@example.com"
     userAccountId: "user2"
-    createdAt: "2023-06-01T00:00:00.000Z"
-    updatedAt: "2023-06-01T00:00:00.000Z"
     designations:
       - designationId: "designation2"
         startDate: "2023-06-01T00:00:00.000Z"
@@ -121,18 +90,12 @@ userAccounts:
   - id: user1
     officialEmail: "john.doe@techinnovators.com"
     password: "pwd"
-    createdAt: "2023-06-01T00:00:00.000Z"
-    updatedAt: "2023-06-01T00:00:00.000Z"
-    companyId: "company1"
     roles:
       - roleId: "role2"
         startDate: "2023-06-01T00:00:00.000Z"
   - id: user2
     officialEmail: "jane.smith@techinnovators.com"
     password: "pwd"
-    createdAt: "2023-06-01T00:00:00.000Z"
-    updatedAt: "2023-06-01T00:00:00.000Z"
-    companyId: "company1"
     roles:
       - roleId: "role1"
         startDate: "2023-06-01T00:00:00.000Z"
