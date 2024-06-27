@@ -7,17 +7,21 @@ import {
   HttpStatus,
   UseInterceptors,
   UseGuards,
-  Request
+  Request,
+  SetMetadata,
 } from '@nestjs/common';
+
 import { AuthService } from './auth.service';
 import { NoFilesInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from './auth.guard';
+import AllowUnauthenticatedAccess from '@api/utils/allow-unauthenticated-access';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @HttpCode(HttpStatus.OK)
+  @AllowUnauthenticatedAccess()
   @Post('login')
   @UseInterceptors(NoFilesInterceptor())
   async login(@Body() signInDto: Record<string, any>) {
