@@ -22,26 +22,9 @@ import { RootQuery } from './root.query';
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      // installSubscriptionHandlers: true,
-      // autoSchemaFile: true,
       autoSchemaFile: join(process.cwd(), 'src/graphql/schema.gql'),
       sortSchema: true,
     }),
-    // GraphQLModule.forRootAsync<ApolloDriverConfig>({
-    //   driver: ApolloDriver,
-    //   // useFactory: (config: ConfigService) => {
-    //   //   return {
-    //   //     debug: config.get('GRAPHQL_DEBUG') === 'true',
-    //   //     playground: config.get('GRAPHQL_PLAYGROUND') === 'true',
-    //   //     autoSchemaFile: join(process.cwd(), 'src/generated/schema.gql'),
-    //   //     sortSchema: true,
-    //   //     fieldResolverEnhancers: ['interceptors'] as Enhancer[],
-    //   //     autoTransformHttpErrors: true,
-    //   //     context: (context: any) => context,
-    //   //   };
-    //   // },
-    //   // inject: [ConfigService],
-    // }),
     EmployeeModule,
     AuthModule,
     UserModule,

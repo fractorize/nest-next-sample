@@ -36,14 +36,10 @@ type UserSignIn = {
   id: string;
   companyId: string;
   officialEmail: string;
-  passwordHash: string;
-  roles: Role[];
-  employeeRecord: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    middleName?: string;
-  };
+  firstName?: string;
+  lastName?: string;
+  middleName?: string;
+  permissions: Record<string, string[]>;
 };
 
 export { EmployeeRowItem, NewEmployee, UserSignIn };

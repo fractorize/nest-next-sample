@@ -6,17 +6,13 @@ import { UserService } from '@api/user/user.service';
 export class AuthService {
   constructor(private userService: UserService) {}
 
-  async login(
-    @Session() session: Record<string, any>,
-    officialEmail: string,
-    password: string,
-  ) {
+  async login(officialEmail: string, password: string) {
     //TODO: handle case where session is already active
-    const user = await this.userService.findByOfficialEmail(officialEmail);
-    if (!user) {
+    const res = await this.userService.findByOfficialEmail(officialEmail);
+    if (!res) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    const { passwordHash, roles, ...rest } = user;
+    const { passwordHash, user } = res;
     if (!passwordHash) {
       throw new UnauthorizedException('Not authorized to sign in');
     }
@@ -24,30 +20,10 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    const permissions = roles.reduce((acc: any, role) => {
-      role.permissions.forEach((permission) => {
-        const resource = permission.resource?.uri;
-        acc[resource] = acc[resource] || [];
-        acc[resource].push(permission.type);
-      });
-      return acc;
-    }, {});
-    const payload = {
-      id: rest.id,
-      officialEmail: rest.officialEmail,
-      companyId: rest.companyId,
-      permissions,
-      firstName: rest.employeeRecord.firstName,
-      lastName: rest.employeeRecord.lastName,
-      middleName: rest.employeeRecord.middleName,
-    };
-    session.user = payload;
-    // WARNING: payload will be sent to the client. DO NOT include sensitive information
-    return payload;
+    return user;
   }
 
-  async logout(@Session() session: Record<string, any>) {
-    session.destroy();
+  async logout() {
     return { message: 'Successfully signed out' };
   }
 }

@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Post,
-  HttpCode,
-  HttpStatus,
-  Session,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Body, Controller, Post, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -15,24 +7,15 @@ export class AuthController {
 
   // @HttpCode(HttpStatus.OK)
   // @Post('login')
-  // @UseInterceptors(NoFilesInterceptor())
-  // async login(
-  //   @Session() session: Record<string, any>,
-  //   @Body() signInDto: Record<string, any>,
-  // ) {
-  //   console.log(session?.id);
+  // // @UseInterceptors(NoFilesInterceptor())
+  // async login(@Body() signInDto: Record<string, any>) {
   //   console.log(signInDto);
-  //   return this.authService.login(
-  //     session,
-  //     signInDto.officialEmail,
-  //     signInDto.password,
-  //   );
+  //   return this.authService.login(signInDto.officialEmail, signInDto.password);
   // }
 
-  // @HttpCode(HttpStatus.OK)
-  // @Post('logout')
-  // async logout(@Session() session: Record<string, any>) {
-  //   return this.authService.logout(session);
-  // }
-  
+  @HttpCode(HttpStatus.OK)
+  @Post('logout')
+  async logout() {
+    // return this.authService.logout();
+  }
 }
