@@ -12,6 +12,7 @@ import { UserModule } from './user/user.module';
 import { Enhancer, GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { RootQuery } from './root.query';
+import {JwtService} from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -30,6 +31,6 @@ import { RootQuery } from './root.query';
     UserModule,
   ],
   controllers: [AppController, AuthController],
-  providers: [AppService, RootQuery],
+  providers: [AppService, RootQuery, JwtService],
 })
 export class AppModule {}

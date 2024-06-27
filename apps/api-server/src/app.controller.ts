@@ -10,7 +10,4 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  // @HttpCode(HttpStatus.OK)
-  // @Post('logout')
-  // async logout() {}
 }

@@ -1,6 +1,7 @@
 import { apiPOST } from "@web/utils/api";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { jwtDecode } from "jwt-decode";
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,10 +10,12 @@ export async function POST(request: NextRequest) {
     if (!res.ok) {
       throw await res.json();
     }
-    const user = await res.json();
-    console.log(user);
-    cookies().set("user", JSON.stringify(user));
-    cookies().set("session", res.headers.get("set-cookie")!);
+    const { accessToken } = await res.json();
+    const user = jwtDecode(accessToken);
+    // console.log(user);
+    const cookieStore = cookies();
+    cookieStore.set("accessToken", accessToken);
+    cookieStore.set("sessionExpires", `${user.exp}`);
     return NextResponse.redirect(new URL("/", request.nextUrl.origin));
   } catch (error: any) {
     const { message, status } =

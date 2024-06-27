@@ -8,8 +8,7 @@ export async function POST(request: NextRequest) {
     if (!res.ok) {
       throw await res.json();
     }
-    cookies().delete("user");
-    cookies().delete("session");
+    cookies().delete("accessToken");
     return NextResponse.redirect(new URL("/", request.nextUrl.origin));
   } catch (error: any) {
     console.log(error);

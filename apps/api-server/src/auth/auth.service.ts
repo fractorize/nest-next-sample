@@ -1,13 +1,19 @@
 import * as bcrypt from 'bcrypt';
-import { Injectable, UnauthorizedException, Session } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { UserService } from '@api/user/user.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private jwtService: JwtService,
+  ) {}
 
   async login(officialEmail: string, password: string) {
-    //TODO: handle case where session is already active
+    if (!officialEmail || !password) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
     const res = await this.userService.findByOfficialEmail(officialEmail);
     if (!res) {
       throw new UnauthorizedException('Invalid credentials');
@@ -20,7 +26,13 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    return user;
+    return {
+      accessToken: await this.jwtService.signAsync({
+        ...user,
+        sub: user.id,
+        id: undefined,
+      }),
+    };
   }
 
   async logout() {
