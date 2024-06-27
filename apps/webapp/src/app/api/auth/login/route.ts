@@ -6,11 +6,10 @@ import { jwtDecode } from "jwt-decode";
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
-    const res = await apiPOST("/auth/login", formData);
-    if (!res.ok) {
-      throw await res.json();
+    const { accessToken } = await apiPOST("/auth/login", formData);
+    if (!accessToken) {
+      throw new Error("Unauthorized");
     }
-    const { accessToken } = await res.json();
     const user = jwtDecode(accessToken);
     const cookieStore = cookies();
     cookieStore.set("accessToken", accessToken);

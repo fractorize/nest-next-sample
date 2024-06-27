@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { EmployeeModule } from './graphql/employee/employee.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthController } from './auth/auth.controller';
+import { AuthGuard } from './auth/auth.guard';
 import { UserModule } from './user/user.module';
 import { Enhancer, GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -31,6 +32,6 @@ import {JwtService} from '@nestjs/jwt';
     UserModule,
   ],
   controllers: [AppController, AuthController],
-  providers: [AppService, RootQuery, JwtService],
+  providers: [AppService, RootQuery, JwtService, AuthGuard],
 })
 export class AppModule {}

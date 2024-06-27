@@ -10,16 +10,17 @@ function getAccesToken() {
 export async function apiPOST(path: string, formData?: FormData) {
   try {
     const accessToken = getAccesToken();
-    if (!accessToken) {
-      throw new Error("Unauthorized");
-    }
-    return await fetch(`${API_URL}${path}`, {
+    const res = await fetch(`${API_URL}${path}`, {
       method: "POST",
       body: formData,
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    if (!res.ok) {
+      throw new Error(res.statusText);
+    }
+    return await res.json();
   } catch (error: any) {
     throw error;
   }
@@ -28,15 +29,16 @@ export async function apiPOST(path: string, formData?: FormData) {
 export async function apiGET(path: string, params?: any) {
   try {
     const accessToken = getAccesToken();
-    if (!accessToken) {
-      throw new Error("Unauthorized");
-    }
-    return await fetch(`${API_URL}${path}`, {
+    const res = await fetch(`${API_URL}${path}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    if (!res.ok) {
+      throw new Error(res.statusText);
+    }
+    return await res.json();
   } catch (error: any) {
     throw error;
   }

@@ -21,7 +21,6 @@ export class AuthController {
   @Post('login')
   @UseInterceptors(NoFilesInterceptor())
   async login(@Body() signInDto: Record<string, any>) {
-    console.log(signInDto);
     return this.authService.login(signInDto.officialEmail, signInDto.password);
   }
 

@@ -4,11 +4,7 @@ import { cookies } from "next/headers";
 
 export async function POST(request: NextRequest) {
   try {
-    const res = await apiPOST("/auth/logout");
-    if (!res.ok) {
-      throw await res.json();
-    }
-    cookies().delete("accessToken");
+    await apiPOST("/auth/logout");
     return NextResponse.redirect(new URL("/", request.nextUrl.origin));
   } catch (error: any) {
     const { message, status } =
@@ -19,5 +15,7 @@ export async function POST(request: NextRequest) {
             status: 500,
           };
     return NextResponse.json({ message }, { status });
+  } finally {
+    cookies().delete("accessToken");
   }
 }

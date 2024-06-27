@@ -6,8 +6,12 @@ export const revalidate = 0;
 
 export default async function Home() {
   // const employees = await trpc.employees.query();
-  const userProfile = await apiGET("/auth/profile");
-  console.log("userProfile", userProfile);
+  try {
+    const userProfile = await apiGET("/hello");
+    console.log("userProfile", userProfile);
+  } catch (error) {
+    console.log("error", error);
+  }
   const employees: any = [];
   return (
     <main className="flex min-h-screen flex-col gap-2 p-24">
