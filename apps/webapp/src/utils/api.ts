@@ -44,6 +44,25 @@ export async function apiGET(path: string, params?: any) {
   }
 }
 
+export async function apiPUT(path: string, formData?: FormData) {
+  try {
+    const accessToken = getAccesToken();
+    const res = await fetch(`${API_URL}${path}`, {
+      method: "PUT",
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    if (!res.ok) {
+      throw new Error(res.statusText);
+    }
+    return await res.json();
+  } catch (error: any) {
+    throw error;
+  }
+}
+
 export async function apiDELETE(path: string) {
   try {
     const accessToken = getAccesToken();

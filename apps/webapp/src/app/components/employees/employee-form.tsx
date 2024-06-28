@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 export default function EmployeeForm({ employee }: { employee: any }) {
   const [employeeCopy, setEmployeeCopy] = useState<any>();
   const router = useRouter();
+  const isNewEmployee = useMemo(() => !employee?.id, [employee]);
 
   useEffect(() => {
     if (!employee) return;
@@ -25,10 +26,18 @@ export default function EmployeeForm({ employee }: { employee: any }) {
   }, [employeeCopy]);
 
   const createNewEmployee = useMemo(() => {
-    return async () => {
+    return async (event: any) => {
+      event.preventDefault();
       try {
         if (!employeeCopy) return;
-        // await trpc.newEmployee.mutate({ data: employeeCopy });
+        const formData = new FormData(event.target);
+        const res = await fetch(`/api/employees`, {
+          method: "POST",
+          body: formData,
+        });
+        if (!res.ok) {
+          throw new Error(res.statusText);
+        }
         router.push(`/employees`);
         router.refresh();
       } catch (error) {
@@ -38,13 +47,18 @@ export default function EmployeeForm({ employee }: { employee: any }) {
   }, [employeeCopy]);
 
   const updateEmployee = useMemo(() => {
-    return async () => {
+    return async (event: any) => {
+      event.preventDefault();
       try {
         if (!employeeCopy) return;
-        // await trpc.updateEmployee.mutate({
-        //   id: employeeCopy.id,
-        //   data: { ...employeeCopy, dateOfBirth: new Date() },
-        // });
+        const formData = new FormData(event.target);
+        const res = await fetch(`/api/employees/${employeeCopy.id}`, {
+          method: "PUT",
+          body: formData,
+        });
+        if (!res.ok) {
+          throw new Error(res.statusText);
+        }
         router.push(`/employees/${employeeCopy.id}`);
         router.refresh();
       } catch (error) {
@@ -54,57 +68,71 @@ export default function EmployeeForm({ employee }: { employee: any }) {
   }, [employeeCopy]);
 
   const onSave = useMemo(() => {
-    return employeeCopy?.id ? updateEmployee : createNewEmployee;
-  }, [employeeCopy]);
+    return isNewEmployee ? createNewEmployee : updateEmployee;
+  }, [updateEmployee, createNewEmployee]);
 
   return (
     <div className="flex flex-col gap-4 min-h-screen justify-center items-center">
       {employeeCopy && (
-        <div className="w-96 flex flex-col gap-4 form-control">
-          <label className="input input-bordered flex items-center gap-2">
+        <form
+          onSubmit={onSave}
+          className="w-96 flex flex-col gap-4 form-control"
+        >
+          <label className="input input-bordered flex items-center gap-2 text-gray-400">
             First Name
             <input
               name="firstName"
               type="text"
-              className="grow"
+              className="grow text-black"
               value={employeeCopy.firstName || ""}
               onChange={onChange}
             />
           </label>
-          <label className="input input-bordered flex items-center gap-2">
+          <label className="input input-bordered flex items-center gap-2 text-gray-400">
             Middle Name
             <input
               name="middleName"
               type="text"
-              className="grow"
+              className="grow text-black"
               value={employeeCopy.middleName || ""}
               onChange={onChange}
             />
           </label>
-          <label className="input input-bordered flex items-center gap-2">
+          <label className="input input-bordered flex items-center gap-2 text-gray-400">
             Last Name
             <input
               name="lastName"
               type="text"
-              className="grow"
+              className="grow text-black"
               value={employeeCopy.lastName || ""}
               onChange={onChange}
             />
           </label>
-          <label className="input input-bordered flex items-center gap-2">
-            Email
+          <label className="input input-bordered flex items-center gap-2 text-gray-400">
+            Personal Email
             <input
-              name="email"
+              name="personalEmail"
               type="text"
-              className="grow"
+              className="grow text-black"
               placeholder="daisy@site.com"
-              value={employeeCopy.officialEmail || ""}
+              value={employeeCopy.personalEmail || ""}
               onChange={onChange}
             />
           </label>
-          <button className="btn btn-primary" onClick={onSave}>
-            Save
-          </button>
+          {isNewEmployee && (
+            <label className="input input-bordered flex items-center gap-2 text-gray-400">
+              Official Email
+              <input
+                name="officialEmail"
+                type="text"
+                className="grow text-black"
+                placeholder=""
+                value={employeeCopy.officialEmail || ""}
+                onChange={onChange}
+              />
+            </label>
+          )}
+          <button className="btn btn-primary">Save</button>
           <Link
             href={
               employeeCopy.id ? `/employees/${employeeCopy.id}` : "/employees"
@@ -113,7 +141,7 @@ export default function EmployeeForm({ employee }: { employee: any }) {
           >
             <button>Cancel</button>
           </Link>
-        </div>
+        </form>
       )}
     </div>
   );

@@ -13,6 +13,7 @@ type NewEmployee = {
   lastName: string;
   dateOfBirth?: Date;
   officialEmail: string;
+  personalEmail?: string;
   password: string;
   companyId: string;
 };

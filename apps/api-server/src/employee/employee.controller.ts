@@ -8,10 +8,12 @@ import {
   HttpStatus,
   UseInterceptors,
   Param,
+  Put,
 } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { NoFilesInterceptor } from '@nestjs/platform-express';
 import AllowUnauthenticatedAccess from '@api/utils/allow-unauthenticated-access';
+import { NewEmployee } from '@api/types/employee';
 
 @Controller('employees')
 export class EmployeeController {
@@ -22,13 +24,42 @@ export class EmployeeController {
     return this.employeeService.getEmployees();
   }
 
-  @Get(":id")
-  async getEmployeeById(@Param() params: {id: string}) {
+  @Get(':id')
+  async getEmployeeById(@Param() params: { id: string }) {
     return this.employeeService.getEmployeeById(params);
   }
 
-  @Delete(":id")
-  async deleteEmployee(@Param() params: {id: string}) {
+  @HttpCode(HttpStatus.OK)
+  @Post()
+  @UseInterceptors(NoFilesInterceptor())
+  async createEmployee(@Body() data: NewEmployee) {
+    return this.employeeService.createEmployee({
+      data: {
+        ...data,
+        companyId: 'company1',
+        password: 'pwd',
+      },
+    });
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Put(':id')
+  @UseInterceptors(NoFilesInterceptor())
+  async updateEmployee(
+    @Param() params: { id: string },
+    @Body()
+    data: {
+      firstName: string;
+      middleName: string;
+      lastName: string;
+      dateOfBirth: string;
+    },
+  ) {
+    return this.employeeService.updateEmployee({ id: params.id, data });
+  }
+
+  @Delete(':id')
+  async deleteEmployee(@Param() params: { id: string }) {
     return this.employeeService.deleteEmployee(params);
   }
 }

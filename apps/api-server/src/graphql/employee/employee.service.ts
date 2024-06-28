@@ -14,7 +14,6 @@ export class EmployeeService {
   }
 
   async getEmployeeById(params: { id: string }): Promise<Employee | null> {
-    console.log('params', params);
     return this.employeeRepository.getEmployeeById(params);
   }
 
