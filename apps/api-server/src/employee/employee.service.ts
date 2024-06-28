@@ -2,14 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, Employee } from '@prisma/client';
 import { EmployeeRepository } from './employee.repository';
 import { EmployeeRowItem, NewEmployee } from '@api/types/employee';
+import { ProducerService } from '@api/queues/producer.service';
 
 @Injectable()
 export class EmployeeService {
-  constructor(private employeeRepository: EmployeeRepository) {}
+  constructor(
+    private employeeRepository: EmployeeRepository,
+    private producerService: ProducerService,
+  ) {}
 
-  async createEmployee(params: {
-    data: NewEmployee;
-  }): Promise<Employee> {
+  async createEmployee(params: { data: NewEmployee }): Promise<Employee> {
     return this.employeeRepository.createEmployee(params);
   }
 
@@ -18,6 +20,8 @@ export class EmployeeService {
   }
 
   async getEmployees(): Promise<EmployeeRowItem[]> {
+    console.log('Adding to email queue');
+    await this.producerService.addToEmailQueue("Awesome!!");
     return this.employeeRepository.getEmployees();
   }
 
