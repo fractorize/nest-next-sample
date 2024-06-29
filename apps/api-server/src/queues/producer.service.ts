@@ -1,29 +1,24 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
-import amqp, { ChannelWrapper } from 'amqp-connection-manager';
-import { Channel } from 'amqplib';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class ProducerService {
-  private channelWrapper: ChannelWrapper;
-  constructor() {
-    const connection = amqp.connect(['amqp://localhost:5672']);
-    this.channelWrapper = connection.createChannel({
-      setup: (channel: Channel) => {
-        return channel.assertQueue('emailQueue', { durable: true });
-      },
-    });
+  constructor(@Inject('EMAIL_QUEUE') private client: ClientProxy) {
+    this.client.connect();
   }
 
   async addToEmailQueue(mail: any) {
     try {
-      await this.channelWrapper.sendToQueue(
-        'emailQueue',
-        Buffer.from(JSON.stringify(mail)),
-        {
-          persistent: true,
-        },
-      );
-      Logger.log('Sent To Queue');
+      this.client.emit({ cmd: 'sendEmail' }, [1,2,3]).subscribe((res) => {
+        console.log(res);
+      });
+      this.client.emit('greet', 'Manoj');
     } catch (error) {
       console.log(error);
       throw new HttpException(
