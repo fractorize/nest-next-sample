@@ -1,7 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 
-const API_URL = process.env.NEXT_PUBLIC_NESTJS_URL;
+const API_URL = process.env.API_SERVER_URL;
 
 function getAccesToken() {
   return cookies().get("accessToken")?.value;

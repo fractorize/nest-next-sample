@@ -1,16 +1,23 @@
-import { Inject, Module } from '@nestjs/common';
-import { ProducerService } from './producer.service';
-import { ClientProxy, ClientsModule, Transport } from '@nestjs/microservices';
+import { Module } from "@nestjs/common";
+import { ProducerService } from "./producer.service";
+import { ClientsModule, Transport } from "@nestjs/microservices";
+import { ConfigService, ConfigModule } from "@nestjs/config";
 
 @Module({
   imports: [
-    ClientsModule.register([
+    ClientsModule.registerAsync([
       {
-        name: 'EMAIL_QUEUE',
-        transport: Transport.RMQ,
-        options: {
-          urls: ['amqp://localhost:5672'],
-          queue: 'emailQueue',
+        name: "EMAIL_QUEUE",
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: async (configService: ConfigService) => {
+          return {
+            transport: Transport.RMQ,
+            options: {
+              urls: [`${configService.get("RABBITMQ_URL")}`],
+              queue: configService.get("EMAIL_QUEUE_NAME"),
+            },
+          };
         },
       },
     ]),
