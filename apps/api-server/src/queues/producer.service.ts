@@ -4,25 +4,23 @@ import {
   Inject,
   Injectable,
   Logger,
-} from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+} from "@nestjs/common";
+import { ClientProxy } from "@nestjs/microservices";
+import { Email } from "../types/email";
 
 @Injectable()
 export class ProducerService {
-  constructor(@Inject('EMAIL_QUEUE') private client: ClientProxy) {
+  constructor(@Inject("EMAIL_QUEUE") private client: ClientProxy) {
     this.client.connect();
   }
 
-  async addToEmailQueue(mail: any) {
+  addToEmailQueue(mail: Email) {
     try {
-      this.client.emit({ cmd: 'sendEmail' }, [1,2,3]).subscribe((res) => {
-        console.log(res);
-      });
-      this.client.emit('greet', 'Manoj');
+      this.client.emit("sendEmail", mail);
     } catch (error) {
       console.log(error);
       throw new HttpException(
-        'Error adding mail to queue',
+        "Error adding mail to queue",
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

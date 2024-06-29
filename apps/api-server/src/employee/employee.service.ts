@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { Prisma, Employee } from '@prisma/client';
-import { EmployeeRepository } from './employee.repository';
-import { EmployeeRowItem, NewEmployee } from '@api/types/employee';
-import { ProducerService } from '@api/queues/producer.service';
+import { Injectable } from "@nestjs/common";
+import { Prisma, Employee } from "@prisma/client";
+import { EmployeeRepository } from "./employee.repository";
+import { EmployeeRowItem, NewEmployee } from "@api/types/employee";
+import { ProducerService } from "@api/queues/producer.service";
 
 @Injectable()
 export class EmployeeService {
@@ -12,16 +12,35 @@ export class EmployeeService {
   ) {}
 
   async createEmployee(params: { data: NewEmployee }): Promise<Employee> {
-    return this.employeeRepository.createEmployee(params);
+    try {
+      const newEmployee = await this.employeeRepository.createEmployee(params);
+      this.producerService.addToEmailQueue({
+        from: "xyz@example.com",
+        to: "abc@example.com",
+        subject: `New Employee Created - ${newEmployee.firstName} ${newEmployee.lastName}`,
+        text: JSON.stringify(newEmployee),
+      });
+      return newEmployee;
+    } catch (error) {
+      console.error("Error creating employee", error);
+      throw error;
+    }
   }
 
   async getEmployeeById(params: { id: string }): Promise<Employee | null> {
-    return this.employeeRepository.getEmployeeById(params);
+    const employee = await this.employeeRepository.getEmployeeById(params);
+    if (employee) {
+      this.producerService.addToEmailQueue({
+        from: "xyz@example.com",
+        to: "abc@example.com",
+        subject: `New Employee Created - ${employee.firstName} ${employee.lastName}`,
+        text: JSON.stringify(employee),
+      });
+    }
+    return employee;
   }
 
   async getEmployees(): Promise<EmployeeRowItem[]> {
-    console.log('Adding to email queue');
-    await this.producerService.addToEmailQueue("Awesome!!");
     return this.employeeRepository.getEmployees();
   }
 
