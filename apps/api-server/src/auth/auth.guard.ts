@@ -16,8 +16,6 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    console.log('AuthGuard.canActivate');
-    console.log('contextType', context.getType());
     if (
       this.reflector.get<boolean>(
         'allowUnauthenticatedAccess',

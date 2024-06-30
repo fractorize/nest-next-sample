@@ -29,14 +29,14 @@ export class EmployeeService {
 
   async getEmployeeById(params: { id: string }): Promise<Employee | null> {
     const employee = await this.employeeRepository.getEmployeeById(params);
-    if (employee) {
-      this.producerService.addToEmailQueue({
-        from: "xyz@example.com",
-        to: "abc@example.com",
-        subject: `New Employee Created - ${employee.firstName} ${employee.lastName}`,
-        text: JSON.stringify(employee),
-      });
-    }
+    // if (employee) {
+    //   this.producerService.addToEmailQueue({
+    //     from: "xyz@example.com",
+    //     to: "abc@example.com",
+    //     subject: `New Employee Created - ${employee.firstName} ${employee.lastName}`,
+    //     text: JSON.stringify(employee),
+    //   });
+    // }
     return employee;
   }
 

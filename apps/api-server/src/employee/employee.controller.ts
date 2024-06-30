@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { NoFilesInterceptor } from '@nestjs/platform-express';
-import AllowUnauthenticatedAccess from '@api/utils/allow-unauthenticated-access';
 import { NewEmployee } from '@api/types/employee';
 
 @Controller('employees')
