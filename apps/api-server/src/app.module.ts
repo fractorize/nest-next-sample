@@ -3,7 +3,7 @@ import { ConfigModule } from "@nestjs/config"; //Should always be the first impo
 import { join } from "path";
 import { Module } from "@nestjs/common";
 import { APP_GUARD } from "@nestjs/core";
-import { Enhancer, GraphQLModule } from "@nestjs/graphql";
+import { GraphQLModule } from "@nestjs/graphql";
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { RootQuery } from "./root.query";
 import { AppController } from "./app.controller";

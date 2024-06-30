@@ -13,7 +13,14 @@ Tailwind/DaisyUI (Component styling)
 ## Installation
 
 ```bash
+
 Ensure Postgresql is installed
+
+Ensure RabbitMQ service is running (perhaps in docker like below)and configure the appropriate values in .env.local
+docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.13-management
+
+Ensure the appropriate email server params are set up in .env.local
+Ensure the email username and password (as shown in the .env.sample file) are setup in the .env file of the messaging microservice
 
 $ pnpm install
 This will install pnpm packages in apps/api-server and apps/webapp

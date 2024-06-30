@@ -1,6 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { Logger } from '@nestjs/common';
 // import { AuthModule } from './auth/auth.module';
 // import { AuthGuard } from './auth/auth.guard';
 // import { AccessModule } from './access/access.module';
@@ -8,6 +9,11 @@ import { AppModule } from './app.module';
 
 
 async function bootstrap() {
+  const logger = new Logger('IMPORTANT');
+  logger.error('=========================================================');
+  logger.warn('ENSURE RabbitMQ is running on the appropriate port!!!');
+  logger.warn('There will be an UnhandledPromiseRejection otherwise!!');
+  logger.error('=========================================================');
   const app = await NestFactory.create(AppModule);
   app.enableCors({
     credentials: true,
